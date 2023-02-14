@@ -1,6 +1,6 @@
 # CompostBuddy
 
-IoT project to assist with home composting. Uses a ESP32 microcontroller and automation routines powered by Home Assistant.
+IoT project to assist with home composting. Uses a ESP32 microcontroller, a minimal self-hosted companion app, and automation routines powered by Home Assistant.
 
 ## Description
 
@@ -11,6 +11,7 @@ With the help of modern technology, we will grow the best tomatoes the world has
 ## Hardware
 - ESP32 based microcontroller
 - Accelerometer (tbd)
-- Thermocouple probe (tbd)
+- Thermocouple probes and related hardware (tbd)
 - Solar power system (solar cells, lipo battery, controller board, etc.)
-- Local installation of Home Assistant
+- Local installation of Home Assistant 
+- Local machine as web host
