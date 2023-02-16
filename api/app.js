@@ -28,9 +28,7 @@ app.get('/api/version', (req, res) => {
 // POST ///////////////////////////////////////////////////////////////////////
 
 app.post('/api/compost', function(req, res) {
-
     req.body.timestamp = new Date();
-
     const uptime = req.body.uptime;
     const lastTurn = req.body.lastTurn;
     const batt = req.body.batt;
@@ -42,13 +40,8 @@ app.post('/api/compost', function(req, res) {
         let db = client.db("compost");
         await db.collection("esp32").insertOne(req.body);
         await client.close();
-
+        console.log("POSTed " + JSON.stringify(req.body));
     };
     run().catch(console.dir);
-
-    res.send({
-        'uptime': uptime,
-        'lastTurn': lastTurn,
-        'batt': batt+1
-    });
+    res.send({});
 });
