@@ -13,9 +13,9 @@ import HelloWorld from "./components/HelloWorld.vue";
       </a>
 
       <ul class="nav nav-pills">
-        <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Active Example</a></li>
-        <li class="nav-item"><RouterLink class="nav-link" to="/">Home</RouterLink></li>
-        <li class="nav-item"><RouterLink class="nav-link" to="/about">About</RouterLink></li>
+        <!-- <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Active Example</a></li> -->
+        <li class="nav-item"><RouterLink class="nav-link" to="/"><font-awesome-icon icon="fa-solid fa-line-chart" class="fa-xl" /></RouterLink></li>
+        <li class="nav-item"><RouterLink class="nav-link" to="/config"><font-awesome-icon icon="fa-solid fa-gears" class="fa-xl" /></RouterLink></li>
       </ul>
     </div>
   </header>
