@@ -8,7 +8,7 @@ import HelloWorld from "./components/HelloWorld.vue";
   <header class="container">
     <div class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-        <font-awesome-icon icon="fa-solid fa-recycle" class="fa-xl"  />
+        <font-awesome-icon icon="fa-solid fa-recycle" class="fa-xl me-2"  />
         <span class="fs-4">CompostBuddy</span>
       </a>
 

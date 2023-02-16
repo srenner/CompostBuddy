@@ -18,7 +18,7 @@ axios.get('http://localhost:3000/api/version')
 
 <template>
     <span>api version</span>
-    <span class="tag">{{ state.apiVersion }}</span>
+    <span class="badge text-bg-primary ms-1 me-1">{{ state.apiVersion }}</span>
 </template>
 
 <style scoped>
