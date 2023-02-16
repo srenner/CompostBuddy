@@ -9,14 +9,14 @@ app.use(express.urlencoded({ extended: true }));
 
 
 const { MongoClient } = require("mongodb");
-const uri = "mongodb://localhost:27017";
+const uri = "mongodb://localhost:27017/";
 const client = new MongoClient(uri);
 async function run() {
   try {
     await client.connect();
     await client.db("compost").command({ ping: 1 });
     console.log("Connected successfully to server");
-    
+
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
@@ -44,11 +44,23 @@ app.get('/api/version', (req, res) => {
 });
 
 app.post('/api/compost', function(req, res) {
+
+    req.body.timestamp = new Date();
+
     const uptime = req.body.uptime;
     const lastTurn = req.body.lastTurn;
     const batt = req.body.batt;
 
-    //do the needful
+    async function run() {
+        const uri = "mongodb://localhost:27017/";
+        const client = new MongoClient(uri);
+        await client.connect();
+        let db = client.db("compost");
+        await db.collection("esp32").insertOne(req.body);
+        await client.close();
+
+    };
+    run().catch(console.dir);
 
     res.send({
         'uptime': uptime,
