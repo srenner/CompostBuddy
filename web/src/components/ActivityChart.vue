@@ -1,6 +1,7 @@
 <script setup>
 import { reactive } from 'vue'
 import axios from 'axios';
+import Chart from 'chart.js/auto';
 
 const state = reactive({ apiVersion: 'unknown' })
 
@@ -17,11 +18,8 @@ axios.get('http://localhost:3000/api/version')
 </script>
 
 <template>
-    <div>
-        <span>api version</span>
-        <span class="badge text-bg-primary ms-1 me-1">{{ state.apiVersion }}</span>
-    </div>
-    
+    <div>chart goes here</div>
+    <div style="width: 800px;"><canvas id="activity"></canvas></div>
 </template>
 
 <style scoped>

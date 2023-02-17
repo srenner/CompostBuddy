@@ -12,6 +12,8 @@ import { faGears } from '@fortawesome/free-solid-svg-icons';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { faSignal } from '@fortawesome/free-solid-svg-icons';
+import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
+
 
 
 library.add(faRecycle);
@@ -19,6 +21,7 @@ library.add(faGears);
 library.add(faHouse);
 library.add(faChartLine);
 library.add(faSignal);
+library.add(faPowerOff);
 
 const app = createApp(App)
     .component('font-awesome-icon', FontAwesomeIcon);

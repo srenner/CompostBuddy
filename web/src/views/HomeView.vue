@@ -1,5 +1,6 @@
 <script setup>
 import ViewHeader from "../components/ViewHeader.vue";
+import ActivityChart from "../components/ActivityChart.vue";
 </script>
 
 <template>
@@ -7,8 +8,8 @@ import ViewHeader from "../components/ViewHeader.vue";
     
     
     <ViewHeader title="Activity" icon="fa-solid fa-chart-line" />
-    <div>This page is like a home</div>
-    
+
+    <ActivityChart />
     
   </main>
 </template>
