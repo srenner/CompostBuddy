@@ -6,6 +6,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const { MongoClient } = require("mongodb");
+const meta = require('./package.json');
+const mongoURI = 'mongodb://localhost:27017/';
 
 app.listen(port, () => {
     console.log(`CompostBuddy API listening on port ${port}`);
@@ -21,10 +23,25 @@ app.get('/api/datetime', (req, res) => {
 });
 
 app.get('/api/version', (req, res) => {
-    res.send('1.0.0');
+    res.send(meta.version);
 });
 
-
+app.get('/api/compost/latest', (req, res) => {
+    async function run() {
+        const filter = {};
+        const client = await MongoClient.connect(
+            mongoURI,
+            { useNewUrlParser: true, useUnifiedTopology: true }
+        );
+        const coll = client.db('compost').collection('esp32');
+        const cursor = coll.find(filter);
+        const result = await coll.findOne({}, {sort: {timestamp: -1}});
+        await client.close();
+        console.log("GET " + JSON.stringify(result));
+        res.send(result);
+    };
+    run().catch(console.dir);
+});
 
 
 // POST ///////////////////////////////////////////////////////////////////////
@@ -36,8 +53,7 @@ app.post('/api/compost', function(req, res) {
     const batt = req.body.batt;
 
     async function run() {
-        const uri = "mongodb://localhost:27017/";
-        const client = new MongoClient(uri);
+        const client = new MongoClient(mongoURI);
         await client.connect();
         let db = client.db("compost");
         await db.collection("esp32").insertOne(req.body);

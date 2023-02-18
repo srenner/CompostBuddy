@@ -1,6 +1,8 @@
 <script setup>
 import ViewHeader from "../components/ViewHeader.vue";
 import ActivityChart from "../components/ActivityChart.vue";
+import MessageCenter from "../components/MessageCenter.vue";
+
 </script>
 
 <template>
@@ -11,5 +13,7 @@ import ActivityChart from "../components/ActivityChart.vue";
 
     <ActivityChart />
     
+    <MessageCenter />
+
   </main>
 </template>
