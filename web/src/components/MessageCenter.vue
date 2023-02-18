@@ -10,7 +10,9 @@ const state = reactive({
 
 axios.get('http://localhost:3000/api/compost/latest')
   .then(function (response) {
-    state.apiVersion = response.data;
+    state.info = response.data.info;
+    state.warnings = response.data.warnings;
+    state.errors = response.data.errors;
   })
   .catch(function (error) {
     console.log(error);
@@ -21,8 +23,18 @@ axios.get('http://localhost:3000/api/compost/latest')
 </script>
 
 <template>
-    <div>
-        <span class="badge text-bg-primary ms-1 me-1">{{ state.apiVersion }}</span>
+    <div class="small">
+      <div class="alert alert-info" role="alert" v-for="info in state.info">
+        {{ info }}
+      </div>
+
+      <div class="alert alert-warning" role="alert" v-for="warning in state.warnings">
+        {{ warning }}
+      </div>
+
+      <div class="alert alert-danger" role="alert" v-for="error in state.errors">
+        {{ error }}
+      </div>
     </div>
     
 </template>
