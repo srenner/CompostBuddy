@@ -1,5 +1,5 @@
 <script setup>
-import ViewHeader from "../components/ViewHeader.vue";
+import PageHeader from "../components/PageHeader.vue";
 import ActivityChart from "../components/ActivityChart.vue";
 import MessageCenter from "../components/MessageCenter.vue";
 
@@ -9,7 +9,7 @@ import MessageCenter from "../components/MessageCenter.vue";
   <main class="container">
     
     
-    <ViewHeader title="Activity" icon="fa-solid fa-chart-line" />
+    <PageHeader title="Activity" icon="fa-solid fa-chart-line" />
 
     <ActivityChart />
     

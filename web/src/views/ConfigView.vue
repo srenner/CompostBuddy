@@ -1,12 +1,12 @@
 <script setup>
-import ViewHeader from "../components/ViewHeader.vue";
+import PageHeader from "../components/PageHeader.vue";
 import ApiInfo from "../components/ApiInfo.vue";
 import Shutdown from "../components/Shutdown.vue";
 </script>
 
 <template>
   <main class="container">    
-    <ViewHeader title="Configuration" icon="fa-solid fa-gears" />
+    <PageHeader title="Configuration" icon="fa-solid fa-gears" />
 
     <div class="mb-4 mt-4">
         <ApiInfo />
