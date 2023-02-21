@@ -26,6 +26,10 @@ axios.get('http://localhost:3000/api/events?start=2023-02-16&end=2023-02-18')
         {
           label: 'temp2',
           data: state.events.map(row => row.bin2.temp)
+        },
+        {
+          label: 'batt',
+          data: state.events.map(row => row.batt)
         }
         ]
       }
