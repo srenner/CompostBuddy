@@ -13,7 +13,10 @@ import MessageCenter from "../components/MessageCenter.vue";
 
     <ActivityChart />
     
-    <MessageCenter />
+    <!-- <MessageCenter /> -->
+
+    
+
 
   </main>
 </template>

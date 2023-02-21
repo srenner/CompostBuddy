@@ -43,6 +43,34 @@ app.get('/api/compost/latest', (req, res) => {
     run().catch(console.dir);
 });
 
+app.get('/api/events', (req, res) =>{
+    async function run() {
+
+        let inputStartDate = req.query.start;
+        let inputEndDate = req.query.end;
+
+        let startDate = new Date(inputStartDate).toUTCString();
+        let endDate = new Date(inputEndDate).toISOString();
+
+        const filter = {
+            'timestamp': {
+              '$gte': new Date(startDate), 
+              '$lte': new Date(endDate)
+            }
+          };
+        const client = await MongoClient.connect(mongoURI,
+            { useNewUrlParser: true, useUnifiedTopology: true }
+        );
+        const coll = client.db('compost').collection('esp32');
+        const cursor = coll.find(filter);
+        const result = await cursor.toArray();
+
+        await client.close();
+        res.send(result);
+    };
+    run().catch(console.dir);
+});
+
 
 // POST ///////////////////////////////////////////////////////////////////////
 
