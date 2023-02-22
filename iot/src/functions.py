@@ -13,7 +13,7 @@ import adafruit_icm20x
 
 class Functions:
     @staticmethod
-    def connect_wifi():
+    def connect_wifi(led, color):
         ssid = secrets.ssid
         password = secrets.password
         wifi.radio.enabled = True
@@ -25,10 +25,18 @@ class Functions:
         requests = adafruit_requests.Session(pool, ssl.create_default_context())
         response = requests.get(secrets.apiURI + "version")
         print(f"Using CompostBuddy API {response.text}")
+        led.fill(color)
         return True
 
     @staticmethod
-    def disconnect_wifi():
+    def disconnect_wifi(led, color):
         wifi.radio.enabled = False
         print('\n' + "Disconnected from WiFi")
+        led.fill(color)
         return True
+
+    def get_gyro_motion(gyro):
+        x = abs(gyro[0])
+        y = abs(gyro[1])
+        z = abs(gyro[2])
+        return max([x,y,z])

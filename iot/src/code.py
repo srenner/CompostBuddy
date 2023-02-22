@@ -14,37 +14,52 @@ import adafruit_httpserver
 import socketpool
 import adafruit_requests
 import adafruit_icm20x
+#import supervisor
+
+# SETUP ##########################################################################
 
 led_white = (50, 50, 50)
 led_red = (50, 0, 0)
 led_green = (0, 1, 0)
 led_off = (0, 0, 0)
-
 pixels = neopixel.NeoPixel(board.NEOPIXEL, 1)
 
-if Functions.connect_wifi():
-    pixels.fill(led_green)
+pixels.fill(led_red)
 
 i2c = board.STEMMA_I2C()
 icm = adafruit_icm20x.ICM20948(i2c)
 
-if Functions.disconnect_wifi():
-    pixels.fill(led_off)
+last_gyro = 0.0
+current_gyro = 0.0
+is_turning = False
+last_turn = 0.0
+
+bin1_temp = 10.0
+bin2_temp = 10.0
+
+pixels.fill(led_off)
+
+# LOGIC ##########################################################################
+
+# Functions.connect_wifi(pixels, led_green)
+# time.sleep(1)
+# Functions.disconnect_wifi(pixels, led_off)
+
+last_gyro = 0.0
+current_gyro = 0.0
 
 while True:
-    #print("Acceleration: X:%.2f, Y: %.2f, Z: %.2f m/s^2" % (icm.acceleration))
-    print("Gyro X:%.2f, Y: %.2f, Z: %.2f rads/s" % (icm.gyro))
-    #print("Magnetometer X:%.2f, Y: %.2f, Z: %.2f uT" % (icm.magnetic))
-    #print("")
+    #print("Gyro X:%.2f, Y: %.2f, Z: %.2f rads/s" % (icm.gyro))
+    #print(time.monotonic())
+
+    current_gyro = Functions.get_gyro_motion(icm.gyro)
+
+    if current_gyro > 1.0 and last_gyro > 1.0:
+        print("Turning")
+    else:
+        print("")
+
+    last_gyro = current_gyro
     time.sleep(1)
 
-x = 0
-while True:
-    pixels.fill(white)
-    time.sleep(0.5)
-    pixels.fill(red)
-    time.sleep(0.5)
-    pixels.fill(green)
-    time.sleep(0.5)
-    x = x + 1
-    print(x)
+print("Bye!")
