@@ -1,0 +1,8 @@
+# Project specific
+.Trashes
+.metadata_never_index
+System Volume Information*
+.fseventsd/no_log
+.fseventsd\no_log
+secrets.py
+lib/
