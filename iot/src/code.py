@@ -9,30 +9,34 @@ import digitalio
 import ssl
 import wifi
 import secrets
+from functions import Functions
 import adafruit_httpserver
 import socketpool
 import adafruit_requests
+import adafruit_icm20x
 
-white = (255, 255, 255)
-red = (255, 0, 0)
-green = (0, 255, 0)
+led_white = (50, 50, 50)
+led_red = (50, 0, 0)
+led_green = (0, 1, 0)
+led_off = (0, 0, 0)
 
 pixels = neopixel.NeoPixel(board.NEOPIXEL, 1)
-pixels.fill(red)
 
-ssid = secrets.ssid
-password = secrets.password
-wifi.radio.hostname = 'CompostBuddy-ESP32'
-print("Connecting to", ssid)
-wifi.radio.connect(ssid, password)
-print("Connected to", ssid)
-#print(f"Listening on http://{wifi.radio.ipv4_address}")
-print(wifi.radio.hostname + " IPv4 " + str(wifi.radio.ipv4_address))
+if Functions.connect_wifi():
+    pixels.fill(led_green)
 
-pool = socketpool.SocketPool(wifi.radio)
-requests = adafruit_requests.Session(pool, ssl.create_default_context())
-response = requests.get(secrets.apiURI + "version")
-print(f"Using CompostBuddy API {response.text}")
+i2c = board.STEMMA_I2C()
+icm = adafruit_icm20x.ICM20948(i2c)
+
+if Functions.disconnect_wifi():
+    pixels.fill(led_off)
+
+while True:
+    #print("Acceleration: X:%.2f, Y: %.2f, Z: %.2f m/s^2" % (icm.acceleration))
+    print("Gyro X:%.2f, Y: %.2f, Z: %.2f rads/s" % (icm.gyro))
+    #print("Magnetometer X:%.2f, Y: %.2f, Z: %.2f uT" % (icm.magnetic))
+    #print("")
+    time.sleep(1)
 
 x = 0
 while True:
@@ -44,5 +48,3 @@ while True:
     time.sleep(0.5)
     x = x + 1
     print(x)
-
-print("Goodbye")
