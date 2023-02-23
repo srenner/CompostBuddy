@@ -21,14 +21,16 @@ class Functions:
         wifi.radio.enabled = True
         wifi.radio.hostname = 'CompostBuddy-ESP32'
         wifi.radio.connect(ssid, password)
-        print('\n' + wifi.radio.hostname + " IPv4 " + str(wifi.radio.ipv4_address))
+        if secrets.DEBUG:
+            print('\n' + wifi.radio.hostname + " IPv4 " + str(wifi.radio.ipv4_address))
         led.fill(colors.led_blue)
         return True
 
     @staticmethod
     def disconnect_wifi(led):
         wifi.radio.enabled = False
-        print('\n' + "Disconnected from WiFi")
+        if secrets.DEBUG:
+            print('\n' + "Disconnected from WiFi")
         led.fill(colors.led_off)
         return True
 

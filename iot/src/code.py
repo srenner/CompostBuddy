@@ -10,6 +10,7 @@ from functions import Functions
 import adafruit_icm20x
 import array
 import colors
+import secrets
 
 # SETUP ##########################################################################
 
@@ -41,10 +42,7 @@ while True:
     if tb_idx > 9:
         tb_idx = 0
     turn_buffer[tb_idx] = current_gyro
-    #print(turn_buffer)
-    #print(sum(turn_buffer))
     is_turning = sum(turn_buffer) > 10
-    #print(is_turning)
     tb_idx += 1
 
     if is_turning == False and was_turning == True:
@@ -54,10 +52,11 @@ while True:
 
     was_turning = is_turning
 
-    if is_turning:
-        print("turning now")
-    else:
-        print(f"last turn", last_turn)
+    if secrets.DEBUG:
+        if is_turning:
+            print("turning now")
+        else:
+            print(f"last turn", last_turn)
 
     time.sleep(1)
 
