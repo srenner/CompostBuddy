@@ -17,29 +17,27 @@ import socketpool
 import adafruit_requests
 import adafruit_icm20x
 import array
+import colors
 #import supervisor
 
 # SETUP ##########################################################################
 
-led_white = (50, 50, 50)
-led_red = (50, 0, 0)
-led_green = (0, 1, 0)
-led_off = (0, 0, 0)
+
 pixels = neopixel.NeoPixel(board.NEOPIXEL, 1)
 
-pixels.fill(led_red)
+pixels.fill(colors.led_red)
 
 i2c = board.STEMMA_I2C()
 icm = adafruit_icm20x.ICM20948(i2c)
 
 is_turning = False
 was_turning = False
-last_turn = 0.0
+last_turn = 'unknown'
 
 bin1_temp = 10.0
 bin2_temp = 10.0
 
-pixels.fill(led_off)
+pixels.fill(colors.led_off)
 
 # LOGIC ##########################################################################
 
@@ -50,9 +48,6 @@ turn_buffer = array.array('f', [0,0,0,0,0,0,0,0,0,0])
 tb_idx = 0
 
 while True:
-    #print("Gyro X:%.2f, Y: %.2f, Z: %.2f rads/s" % (icm.gyro))
-    #print(time.monotonic())
-
     current_gyro = Functions.get_gyro_motion(icm.gyro)
 
     if tb_idx > 9:
@@ -66,7 +61,14 @@ while True:
 
 
     if is_turning == False and was_turning == True:
-        last_turn = time.monotonic()
+        Functions.connect_wifi(pixels)
+
+        last_turn = Functions.get_datetime()
+
+        Functions.disconnect_wifi(pixels)
+
+
+
     was_turning = is_turning
 
     if is_turning:
