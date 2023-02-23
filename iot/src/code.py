@@ -3,14 +3,10 @@
 # SPDX-License-Identifier: MIT
 
 import collections
-from collections import deque
 import time
 import board
 import neopixel
 import digitalio
-import ssl
-import wifi
-import secrets
 from functions import Functions
 import adafruit_httpserver
 import socketpool
@@ -18,7 +14,6 @@ import adafruit_requests
 import adafruit_icm20x
 import array
 import colors
-#import supervisor
 
 # SETUP ##########################################################################
 
@@ -37,15 +32,12 @@ last_turn = 'unknown'
 bin1_temp = 10.0
 bin2_temp = 10.0
 
+turn_buffer = array.array('f', [0,0,0,0,0,0,0,0,0,0])
+tb_idx = 0
+
 pixels.fill(colors.led_off)
 
 # LOGIC ##########################################################################
-
-# Functions.connect_wifi(pixels, led_green)
-# Functions.disconnect_wifi(pixels, led_off)
-
-turn_buffer = array.array('f', [0,0,0,0,0,0,0,0,0,0])
-tb_idx = 0
 
 while True:
     current_gyro = Functions.get_gyro_motion(icm.gyro)
@@ -59,15 +51,10 @@ while True:
     #print(is_turning)
     tb_idx += 1
 
-
     if is_turning == False and was_turning == True:
         Functions.connect_wifi(pixels)
-
         last_turn = Functions.get_datetime()
-
         Functions.disconnect_wifi(pixels)
-
-
 
     was_turning = is_turning
 
