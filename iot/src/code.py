@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: MIT
 
+import collections
+from collections import deque
 import time
 import board
 import neopixel
@@ -14,6 +16,7 @@ import adafruit_httpserver
 import socketpool
 import adafruit_requests
 import adafruit_icm20x
+import array
 #import supervisor
 
 # SETUP ##########################################################################
@@ -29,9 +32,8 @@ pixels.fill(led_red)
 i2c = board.STEMMA_I2C()
 icm = adafruit_icm20x.ICM20948(i2c)
 
-last_gyro = 0.0
-current_gyro = 0.0
 is_turning = False
+was_turning = False
 last_turn = 0.0
 
 bin1_temp = 10.0
@@ -42,11 +44,10 @@ pixels.fill(led_off)
 # LOGIC ##########################################################################
 
 # Functions.connect_wifi(pixels, led_green)
-# time.sleep(1)
 # Functions.disconnect_wifi(pixels, led_off)
 
-last_gyro = 0.0
-current_gyro = 0.0
+turn_buffer = array.array('f', [0,0,0,0,0,0,0,0,0,0])
+tb_idx = 0
 
 while True:
     #print("Gyro X:%.2f, Y: %.2f, Z: %.2f rads/s" % (icm.gyro))
@@ -54,12 +55,25 @@ while True:
 
     current_gyro = Functions.get_gyro_motion(icm.gyro)
 
-    if current_gyro > 1.0 and last_gyro > 1.0:
-        print("Turning")
-    else:
-        print("")
+    if tb_idx > 9:
+        tb_idx = 0
+    turn_buffer[tb_idx] = current_gyro
+    #print(turn_buffer)
+    #print(sum(turn_buffer))
+    is_turning = sum(turn_buffer) > 10
+    #print(is_turning)
+    tb_idx += 1
 
-    last_gyro = current_gyro
+
+    if is_turning == False and was_turning == True:
+        last_turn = time.monotonic()
+    was_turning = is_turning
+
+    if is_turning:
+        print("turning now")
+    else:
+        print(f"last turn", last_turn)
+
     time.sleep(1)
 
 print("Bye!")
