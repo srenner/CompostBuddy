@@ -2,15 +2,11 @@
 #
 # SPDX-License-Identifier: MIT
 
-import collections
 import time
 import board
 import neopixel
 import digitalio
 from functions import Functions
-import adafruit_httpserver
-import socketpool
-import adafruit_requests
 import adafruit_icm20x
 import array
 import colors
