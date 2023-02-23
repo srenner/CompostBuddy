@@ -17,9 +17,9 @@ app.listen(port, () => {
 
 app.get('/api/datetime', (req, res) => {
     let date = new Date();
-    let localDate = 
-        new Date(date.getTime() - date.getTimezoneOffset()*60000);
-    res.send(localDate.toISOString());
+    //let localDate = 
+    //    new Date(date.getTime() - date.getTimezoneOffset()*60000);
+    res.send(date.toISOString());
 });
 
 app.get('/api/version', (req, res) => {
