@@ -5,6 +5,7 @@ import digitalio
 import ssl
 import wifi
 import secrets
+import settings
 import functions
 import adafruit_httpserver
 import socketpool
@@ -21,7 +22,7 @@ class Functions:
         wifi.radio.enabled = True
         wifi.radio.hostname = 'CompostBuddy-ESP32'
         wifi.radio.connect(ssid, password)
-        if secrets.DEBUG:
+        if settings.DEBUG:
             print('\n' + wifi.radio.hostname + " IPv4 " + str(wifi.radio.ipv4_address))
         led.fill(colors.led_blue)
         return True
@@ -29,7 +30,7 @@ class Functions:
     @staticmethod
     def disconnect_wifi(led):
         wifi.radio.enabled = False
-        if secrets.DEBUG:
+        if settings.DEBUG:
             print('\n' + "Disconnected from WiFi")
         led.fill(colors.led_off)
         return True
