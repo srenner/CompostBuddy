@@ -36,6 +36,16 @@ class Functions:
         return True
 
     @staticmethod
+    def post_debug(json):
+        if wifi.radio.enabled:
+            pool = socketpool.SocketPool(wifi.radio)
+            requests = adafruit_requests.Session(pool, ssl.create_default_context())
+            response = requests.post(secrets.apiURI + "debug", json)
+            return response.text
+        else:
+            return ''
+
+    @staticmethod
     def get_datetime():
         if wifi.radio.enabled:
             pool = socketpool.SocketPool(wifi.radio)
