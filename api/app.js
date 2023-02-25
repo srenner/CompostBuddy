@@ -19,6 +19,7 @@ app.get('/api/datetime', (req, res) => {
     let date = new Date();
     //let localDate = 
     //    new Date(date.getTime() - date.getTimezoneOffset()*60000);
+    console.log("GET " + date.toISOString())
     res.send(date.toISOString());
 });
 
