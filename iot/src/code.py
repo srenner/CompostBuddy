@@ -26,10 +26,14 @@ icm = adafruit_icm20x.ICM20948(i2c)
 
 therm1 = adafruit_thermistor.Thermistor(board.A0, 10000, 10000, 25, 3950)
 therm2 = adafruit_thermistor.Thermistor(board.A1, 10000, 10000, 25, 3950)
-bin1_temp = 0.0
+bin1_temp = therm1.temperature
 bin1_buf = [0.0,0.0,0.0]
-bin2_temp = 0.0
+bin2_temp = therm2.temperature
 bin2_buf = [0.0,0.0,0.0]
+
+if settings.DEBUG:
+    print(f"temp init at ", bin1_temp, bin2_temp)
+
 
 is_turning = False
 was_turning = False
@@ -96,7 +100,11 @@ while True:
         next_json = current_time + settings.json_interval
     if current_time >= next_post:
         print("post data now")
-        next_post = current_time + settings.post_interval
+        Functions.connect_wifi(pixels)
+        json = "{'temp1':" + str(bin1_temp) +"}"
+        Functions.post_debug(json)
+        Functions.disconnect_wifi(pixels)
+
 
     time.sleep(1)
 
