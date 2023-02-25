@@ -92,3 +92,8 @@ app.post('/api/compost', function(req, res) {
     run().catch(console.dir);
     res.send({});
 });
+
+app.post('/api/debug', function(req, res) {
+    console.log("POST: " + JSON.stringify(req.body));
+    res.send({});
+});
