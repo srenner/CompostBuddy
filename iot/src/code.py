@@ -97,14 +97,16 @@ while True:
         print(f"bin2: {bin2_buf}")
         print(f"bin2: {bin2_temp}")
 
+        Functions.connect_wifi(pixels)
+        reqBody = json.loads("{\"temp1\": " + str(bin1_temp) + "}")
+        Functions.post_debug(reqBody)
+        Functions.disconnect_wifi(pixels)
+
         next_json = current_time + settings.json_interval
     if current_time >= next_post:
         print("post data now")
-        Functions.connect_wifi(pixels)
-        json = "{'temp1':" + str(bin1_temp) +"}"
-        Functions.post_debug(json)
-        Functions.disconnect_wifi(pixels)
 
+        next_post = current_time + settings.post_interval
 
     time.sleep(1)
 

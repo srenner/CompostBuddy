@@ -36,11 +36,11 @@ class Functions:
         return True
 
     @staticmethod
-    def post_debug(json):
+    def post_debug(obj):
         if wifi.radio.enabled:
             pool = socketpool.SocketPool(wifi.radio)
             requests = adafruit_requests.Session(pool, ssl.create_default_context())
-            response = requests.post(secrets.apiURI + "debug", json)
+            response = requests.post(secrets.apiURI + "debug", json=obj)
             return response.text
         else:
             return ''
