@@ -6,6 +6,7 @@ import time
 import board
 import neopixel
 import digitalio
+from analogio import AnalogIn
 from functions import Functions
 import adafruit_icm20x
 import array
@@ -42,6 +43,18 @@ last_turn = 'unknown'
 turn_buffer = array.array('f', [0,0,0,0,0,0,0,0,0,0])
 tb_idx = 0
 
+pgood = digitalio.DigitalInOut(board.D37) #SPI MI
+pgood.direction = digitalio.Direction.INPUT
+
+chg = digitalio.DigitalInOut(board.D35) # SPI MO
+chg.direction = digitalio.Direction.INPUT
+
+voltageInput = AnalogIn(board.A2)
+#volts = voltageInput.value
+
+
+
+
 current_time = time.time()
 next_json = current_time + settings.json_interval
 next_post = current_time + settings.post_interval
@@ -50,10 +63,7 @@ pixels.fill(colors.led_off)
 
 # LOGIC ##########################################################################
 
-#print(time.time())
-
 while True:
-
 
     current_gyro = Functions.get_gyro_motion(icm.gyro)
 
@@ -70,15 +80,12 @@ while True:
 
     was_turning = is_turning
 
-    if settings.DEBUG:
-        if is_turning:
-            print("turning now")
-        else:
-            print(f"last turn", last_turn)
-
     current_time = time.time()
     if current_time >= next_json:
         print("create json object now")
+
+        print("pgood:" + str(pgood.value))
+        print("chg:" + str(chg.value))
 
         bin1_buf[0] = therm1.temperature
         bin2_buf[0] = therm2.temperature
@@ -97,8 +104,12 @@ while True:
         print(f"bin2: {bin2_buf}")
         print(f"bin2: {bin2_temp}")
 
+        volts = (voltageInput.value * 3.3) / 65536
+
+        print(f"volts: {volts}")
+
         Functions.connect_wifi(pixels)
-        reqBody = json.loads("{\"temp1\": " + str(bin1_temp) + "}")
+        reqBody = json.loads("{\"volts\": " + str(volts) + "}")
         Functions.post_debug(reqBody)
         Functions.disconnect_wifi(pixels)
 
