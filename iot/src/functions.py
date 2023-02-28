@@ -13,57 +13,11 @@ import adafruit_requests
 import adafruit_icm20x
 import colors
 
-class Functions:
-    @staticmethod
-    def connect_wifi(led):
-        led.fill(colors.led_yellow)
-        ssid = secrets.ssid
-        password = secrets.password
-        wifi.radio.enabled = True
-        wifi.radio.hostname = 'CompostBuddy-ESP32'
-        wifi.radio.connect(ssid, password)
-        if settings.DEBUG:
-            print('\n' + wifi.radio.hostname + " IPv4 " + str(wifi.radio.ipv4_address))
-        led.fill(colors.led_blue)
-        return True
+class HelperFunctions:
 
     @staticmethod
-    def disconnect_wifi(led):
-        wifi.radio.enabled = False
-        if settings.DEBUG:
-            print('\n' + "Disconnected from WiFi")
-        led.fill(colors.led_off)
-        return True
-
-    @staticmethod
-    def post_debug(obj):
-        if wifi.radio.enabled:
-            pool = socketpool.SocketPool(wifi.radio)
-            requests = adafruit_requests.Session(pool, ssl.create_default_context())
-            response = requests.post(secrets.apiURI + "debug", json=obj)
-            return response.text
-        else:
-            return ''
-
-    @staticmethod
-    def get_datetime():
-        if wifi.radio.enabled:
-            pool = socketpool.SocketPool(wifi.radio)
-            requests = adafruit_requests.Session(pool, ssl.create_default_context())
-            response = requests.get(secrets.apiURI + "datetime")
-            return response.text
-        else:
-            return ''
-
-    @staticmethod
-    def get_api_version():
-        if wifi.radio.enabled:
-            pool = socketpool.SocketPool(wifi.radio)
-            requests = adafruit_requests.Session(pool, ssl.create_default_context())
-            response = requests.get(secrets.apiURI + "version")
-            return response.text
-        else:
-            return ''
+    def calc_voltage(val):
+        return (val * 3.3) / 65536
 
     @staticmethod
     def get_gyro_motion(gyro):
@@ -72,3 +26,39 @@ class Functions:
         y = abs(gyro[1])
         z = abs(gyro[2])
         return max([x,y,z])
+
+
+class NetFunctions:
+
+    def __init__(self):
+        self.pool = socketpool.SocketPool(wifi.radio)
+        self.requests = adafruit_requests.Session(self.pool, ssl.create_default_context())
+
+    def connect_wifi(self, led):
+        led.fill(colors.led_yellow)
+        ssid = secrets.ssid
+        password = secrets.password
+        wifi.radio.enabled = True
+        wifi.radio.hostname = 'CompostBuddy-ESP32'
+        wifi.radio.connect(ssid, password)
+        led.fill(colors.led_blue)
+        return True
+
+    def disconnect_wifi(self, led):
+        wifi.radio.enabled = False
+        led.fill(colors.led_off)
+        return True
+
+    def post_debug(self, obj):
+        if wifi.radio.enabled:
+            response = self.requests.post(secrets.apiURI + "debug", json=obj)
+            return response.text
+        else:
+            return ''
+
+    def http_get_text(self, uri):
+        if wifi.radio.enabled:
+            response = self.requests.get(secrets.apiURI + uri)
+            return response.text
+        else:
+            return ''
