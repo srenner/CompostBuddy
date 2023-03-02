@@ -115,6 +115,7 @@ while True:
         netFuncs.connect_wifi(pixels)
         reqBody = json.loads("{\"volts\": " + str(volts) + "}")
         netFuncs.post_debug(reqBody)
+        print(netFuncs.http_get_text("datetime"))
         netFuncs.disconnect_wifi(pixels)
 
         next_json = current_time + settings.json_interval

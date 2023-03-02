@@ -17,7 +17,7 @@ class HelperFunctions:
 
     @staticmethod
     def calc_voltage(val):
-        return (val * 3.3) / 65536
+        return ((val * 3.3) / 65536) * 2
 
     @staticmethod
     def get_gyro_motion(gyro):
@@ -51,14 +51,20 @@ class NetFunctions:
 
     def post_debug(self, obj):
         if wifi.radio.enabled:
-            response = self.requests.post(secrets.apiURI + "debug", json=obj)
-            return response.text
+            try:
+                response = self.requests.post(secrets.apiURI + "debug", json=obj)
+                return response.text
+            except RuntimeError as e:
+                print(str(e))
         else:
             return ''
 
     def http_get_text(self, uri):
         if wifi.radio.enabled:
-            response = self.requests.get(secrets.apiURI + uri)
-            return response.text
+            try:
+                response = self.requests.get(secrets.apiURI + uri)
+                return response.text
+            except RuntimeError as e:
+                print(str(e))
         else:
             return ''
