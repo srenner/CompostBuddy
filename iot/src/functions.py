@@ -17,6 +17,8 @@ class HelperFunctions:
 
     @staticmethod
     def calc_voltage(val):
+        #physical circuit goes through a voltage divider
+        #so we double the reading to calc actual voltage
         return ((val * 3.3) / 65536) * 2
 
     @staticmethod
