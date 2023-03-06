@@ -35,6 +35,12 @@ class NetFunctions:
     def __init__(self):
         self.pool = socketpool.SocketPool(wifi.radio)
         self.requests = adafruit_requests.Session(self.pool, ssl.create_default_context())
+        self.errors = []
+
+    def flush_errors(self):
+        err = self.errors.copy()
+        self.errors = []
+        return err
 
     def connect_wifi(self, led):
         led.fill(colors.led_yellow)
@@ -42,9 +48,13 @@ class NetFunctions:
         password = secrets.password
         wifi.radio.enabled = True
         wifi.radio.hostname = 'CompostBuddy-ESP32'
-        wifi.radio.connect(ssid, password)
-        led.fill(colors.led_blue)
-        return True
+        try:
+            wifi.radio.connect(ssid, password)
+            led.fill(colors.led_blue)
+            return True
+        except Exception as e:
+            print(str(e))
+            return False
 
     def disconnect_wifi(self, led):
         wifi.radio.enabled = False
@@ -56,8 +66,10 @@ class NetFunctions:
             try:
                 response = self.requests.post(secrets.apiURI + "debug", json=obj)
                 return response.text
-            except RuntimeError as e:
+            except Exception as e:
                 print(str(e))
+                self.errors.append(str(e))
+                return ''
         else:
             return ''
 
@@ -66,7 +78,9 @@ class NetFunctions:
             try:
                 response = self.requests.get(secrets.apiURI + uri)
                 return response.text
-            except RuntimeError as e:
+            except Exception as e:
                 print(str(e))
+                self.errors.append(str(e))
+                return ''
         else:
             return ''

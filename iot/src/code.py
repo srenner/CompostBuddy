@@ -23,8 +23,6 @@ pixels.fill(colors.led_red)
 
 netFuncs = NetFunctions()
 
-#print(str(analogio.AnalogIn(board.A2).reference_voltage))
-
 i2c = board.STEMMA_I2C()
 icm = adafruit_icm20x.ICM20948(i2c)
 
@@ -42,12 +40,15 @@ last_turn = 'unknown'
 turn_buffer = array.array('f', [0,0,0,0,0,0,0,0,0,0])
 tb_idx = 0
 
+# pgood indicates if the battery charger has a valid power source connected
 pgood = digitalio.DigitalInOut(board.D37) #SPI MI
 pgood.direction = digitalio.Direction.INPUT
 
+# chg indicates if the battery charger is actively charging the battery
 chg = digitalio.DigitalInOut(board.D35) # SPI MO
 chg.direction = digitalio.Direction.INPUT
 
+# voltage of the 3.7/4.2v battery that powers the board
 voltageInput = analogio.AnalogIn(board.A2)
 
 current_time = time.time()
@@ -88,28 +89,32 @@ while True:
         chargerAvailable = not pgood.value
         charging = not chg.value
 
-        print("pgood:", str(chargerAvailable))
-        print("chg:", str(charging))
+        if settings.DEBUG:
+            print("pgood:", str(chargerAvailable))
+            print("chg:", str(charging))
 
 
-        bin1_buf[0] = therm1.temperature
-        bin2_buf[0] = therm2.temperature
-        time.sleep(.1)
-        bin1_buf[1] = therm1.temperature
-        bin2_buf[1] = therm2.temperature
-        time.sleep(.1)
-        bin1_buf[2] = therm1.temperature
-        bin2_buf[2] = therm2.temperature
-
-        bin1_temp = sum(bin1_buf) / len(bin1_buf)
-        bin2_temp = sum(bin2_buf) / len(bin2_buf)
+        if settings.use_temperature_buffers:
+            bin1_buf[0] = therm1.temperature
+            bin2_buf[0] = therm2.temperature
+            time.sleep(.1)
+            bin1_buf[1] = therm1.temperature
+            bin2_buf[1] = therm2.temperature
+            time.sleep(.1)
+            bin1_buf[2] = therm1.temperature
+            bin2_buf[2] = therm2.temperature
+            bin1_temp = sum(bin1_buf) / len(bin1_buf)
+            bin2_temp = sum(bin2_buf) / len(bin2_buf)
+        else:
+            bin1_temp = therm1.temperature
+            bin2_temp = therm2.temperature
 
         print(f"bin1: {bin1_temp}")
         print(f"bin2: {bin2_temp}")
 
         volts = HelperFunctions.calc_voltage(voltageInput.value)
 
-        print(f"volts: {volts}")
+        #print(f"volts: {volts}")
 
         netFuncs.connect_wifi(pixels)
         reqBody = json.loads("{\"volts\": " + str(volts) + "}")
@@ -121,6 +126,9 @@ while True:
 
     if current_time >= next_post:
         print("post data now")
+
+        errors = netFuncs.flush_errors()
+        print(errors)
 
         next_post = current_time + settings.post_interval
 
