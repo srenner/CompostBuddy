@@ -14,3 +14,6 @@ With the help of modern technology, we will grow the best tomatoes the world has
 - Thermistor probes
 - Solar power system (solar cells, lipo battery, controller board, etc.)
 - Local machine as web host
+
+## Possible future enhancements
+- Push notifications and data visibility powered by Home Assistant
