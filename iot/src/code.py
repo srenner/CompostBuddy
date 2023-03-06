@@ -68,12 +68,14 @@ pixels.fill(colors.led_off)
 while True:
     current_gyro = HelperFunctions.get_gyro_motion(icm.gyro)
 
+    #add item to gyroscope buffer to determine if the barrel is currently turning
     if tb_idx > 9:
         tb_idx = 0
     turn_buffer[tb_idx] = current_gyro
     is_turning = sum(turn_buffer) > 10
     tb_idx += 1
     if is_turning == False and was_turning == True:
+        #turning is finished, set last_turn to be used in the next json post
         netFuncs.connect_wifi(pixels)
         last_turn = netFuncs.http_get_text("datetime")
         netFuncs.disconnect_wifi(pixels)
@@ -90,7 +92,6 @@ while True:
         print("chg:", str(charging))
 
 
-
         bin1_buf[0] = therm1.temperature
         bin2_buf[0] = therm2.temperature
         time.sleep(.1)
@@ -103,9 +104,7 @@ while True:
         bin1_temp = sum(bin1_buf) / len(bin1_buf)
         bin2_temp = sum(bin2_buf) / len(bin2_buf)
 
-        #print(f"bin1: {bin1_buf}")
         print(f"bin1: {bin1_temp}")
-        #print(f"bin2: {bin2_buf}")
         print(f"bin2: {bin2_temp}")
 
         volts = HelperFunctions.calc_voltage(voltageInput.value)
@@ -119,11 +118,12 @@ while True:
         netFuncs.disconnect_wifi(pixels)
 
         next_json = current_time + settings.json_interval
+
     if current_time >= next_post:
         print("post data now")
 
         next_post = current_time + settings.post_interval
 
-    time.sleep(1)
+    time.sleep(settings.loop_interval)
 
 print("Bye!")
