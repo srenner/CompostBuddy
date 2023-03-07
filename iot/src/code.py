@@ -18,8 +18,8 @@ import adafruit_thermistor
 
 # SETUP ##########################################################################
 
-pixels = neopixel.NeoPixel(board.NEOPIXEL, 1)
-pixels.fill(colors.led_red)
+led = neopixel.NeoPixel(board.NEOPIXEL, 1)
+led.fill(colors.led_red)
 
 netFuncs = NetFunctions()
 
@@ -62,7 +62,7 @@ if settings.DEBUG:
     print("pgood:", not pgood.value)
     print("chg:", not chg.value)
 
-pixels.fill(colors.led_off)
+led.fill(colors.led_off)
 
 # LOGIC ##########################################################################
 
@@ -77,9 +77,9 @@ while True:
     tb_idx += 1
     if is_turning == False and was_turning == True:
         #turning is finished, set last_turn to be used in the next json post
-        netFuncs.connect_wifi(pixels)
+        netFuncs.connect_wifi(led)
         last_turn = netFuncs.http_get_text("datetime")
-        netFuncs.disconnect_wifi(pixels)
+        netFuncs.disconnect_wifi(led)
     was_turning = is_turning
 
     current_time = time.time()
@@ -92,7 +92,6 @@ while True:
         if settings.DEBUG:
             print("pgood:", str(chargerAvailable))
             print("chg:", str(charging))
-
 
         if settings.use_temperature_buffers:
             bin1_buf[0] = therm1.temperature
@@ -109,27 +108,27 @@ while True:
             bin1_temp = therm1.temperature
             bin2_temp = therm2.temperature
 
-        print(f"bin1: {bin1_temp}")
-        print(f"bin2: {bin2_temp}")
+        if settings.DEBUG:
+            print(f"bin1: {bin1_temp}")
+            print(f"bin2: {bin2_temp}")
 
         volts = HelperFunctions.calc_voltage(voltageInput.value)
 
-        #print(f"volts: {volts}")
 
-        netFuncs.connect_wifi(pixels)
+        # append json object to list
+
+        netFuncs.connect_wifi(led)
         reqBody = json.loads("{\"volts\": " + str(volts) + "}")
         netFuncs.post_debug(reqBody)
         print(netFuncs.http_get_text("datetime"))
-        netFuncs.disconnect_wifi(pixels)
+        netFuncs.disconnect_wifi(led)
 
         next_json = current_time + settings.json_interval
 
     if current_time >= next_post:
         print("post data now")
-
         errors = netFuncs.flush_errors()
         print(errors)
-
         next_post = current_time + settings.post_interval
 
     time.sleep(settings.loop_interval)
