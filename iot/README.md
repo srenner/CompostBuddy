@@ -16,24 +16,17 @@
 
 ## Example data to push to the server
 ~~~
-{
-    "timestamp": { "$date": "2023-02-15T17:09:43.942Z" },
-    "info": [],
-    "warnings": [
-        "low battery"
-    ],
-    "errors": [],
-    "uptime": 777600,
-    "lastTurn": 604800,
-    "batt": 28,
-    "battStatus": "discharging",
-    "bin1": {
-        "temp": 54.4,
-        "status": "active"
-    },
-    "bin2": {
-        "temp": 20.1,
-        "status": "idle"
-    }
-}
+[
+	{
+		"temperature1": 26.6,
+		"temperature2": 15.9,
+		"vbat": 4.13,
+		"last_turn": "2022-06-07T06:00:00.000Z",
+		"pgood": true,
+		"charging": true,
+		"errors": [
+			"OutOfRetries: Repeated socket failures"
+		]
+	}
+]
 ~~~
