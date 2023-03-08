@@ -11,7 +11,6 @@ from functions import HelperFunctions, NetFunctions
 import adafruit_icm20x
 import array
 import colors
-import secrets
 import settings
 import json
 import adafruit_thermistor
@@ -35,7 +34,7 @@ bin2_buf = [0.0,0.0,0.0]
 
 is_turning = False
 was_turning = False
-last_turn = 'unknown'
+last_turn = ''
 
 turn_buffer = array.array('f', [0,0,0,0,0,0,0,0,0,0])
 tb_idx = 0
@@ -62,11 +61,16 @@ if settings.DEBUG:
     print("pgood:", not pgood.value)
     print("chg:", not chg.value)
 
+post_body = []
+
 led.fill(colors.led_off)
 
 # LOGIC ##########################################################################
 
 while True:
+
+    #print(time.time())
+
     current_gyro = HelperFunctions.get_gyro_motion(icm.gyro)
 
     #add item to gyroscope buffer to determine if the barrel is currently turning
@@ -84,7 +88,7 @@ while True:
 
     current_time = time.time()
     if current_time >= next_json:
-        print("create json object now")
+        print("Building JSON Object")
 
         chargerAvailable = not pgood.value
         charging = not chg.value
@@ -114,21 +118,33 @@ while True:
 
         volts = HelperFunctions.calc_voltage(voltageInput.value)
 
-
         # append json object to list
+        # ...
 
-        netFuncs.connect_wifi(led)
-        reqBody = json.loads("{\"volts\": " + str(volts) + "}")
-        netFuncs.post_debug(reqBody)
-        print(netFuncs.http_get_text("datetime"))
-        netFuncs.disconnect_wifi(led)
+        datapoint = {
+            "timeref": time.time(),
+            "temp1": bin1_temp,
+            "temp2": bin2_temp,
+            "vbat": volts,
+            "last_turn": last_turn,
+            "power": chargerAvailable,
+            "charging": charging,
+            "errors": netFuncs.flush_errors()
+        }
+
+        post_body.append(datapoint)
 
         next_json = current_time + settings.json_interval
 
     if current_time >= next_post:
-        print("post data now")
-        errors = netFuncs.flush_errors()
-        print(errors)
+        print("POSTing Data")
+
+        netFuncs.connect_wifi(led)
+        netFuncs.post_json("compost", post_body)
+        netFuncs.disconnect_wifi(led)
+
+        post_body = []
+
         next_post = current_time + settings.post_interval
 
     time.sleep(settings.loop_interval)
