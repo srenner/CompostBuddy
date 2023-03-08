@@ -7,10 +7,9 @@ const state = reactive({ apiVersion: 'unknown', events: [] });
 
 const minutesInDay = 1440; // should be pretty close to records per day
 
-axios.get('http://localhost:3000/api/events?start=2023-02-16&end=2023-02-18')
+axios.get('http://localhost:3000/api/events?start=2023-03-08&end=2023-03-18')
   .then(function (response) {
-    state.events = response.data;
-
+    state.events = response.data.slice(-30);
 
     new Chart(
     document.getElementById('activity1'),
@@ -21,20 +20,19 @@ axios.get('http://localhost:3000/api/events?start=2023-02-16&end=2023-02-18')
         datasets: [
         {
           label: 'temp1',
-          data: state.events.map(row => row.bin1.temp)
+          data: state.events.map(row => row.temp1)
         },
         {
           label: 'temp2',
-          data: state.events.map(row => row.bin2.temp)
+          data: state.events.map(row => row.temp2)
         },
         {
           label: 'batt',
-          data: state.events.map(row => row.batt)
+          data: state.events.map(row => row.vbat)
         }
         ]
       }
     });
-
 
   })
   .catch(function (error) {
