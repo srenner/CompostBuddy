@@ -1,5 +1,3 @@
-import time
-import board
 import neopixel
 import digitalio
 import ssl
@@ -7,10 +5,8 @@ import wifi
 import secrets
 import settings
 import functions
-import adafruit_httpserver
 import socketpool
 import adafruit_requests
-import adafruit_icm20x
 import colors
 
 class HelperFunctions:
@@ -54,6 +50,7 @@ class NetFunctions:
             return True
         except Exception as e:
             print(str(e))
+            self.errors.append(str(e))
             return False
 
     def disconnect_wifi(self, led):
@@ -61,10 +58,10 @@ class NetFunctions:
         led.fill(colors.led_off)
         return True
 
-    def post_debug(self, obj):
+    def post_json(self, endpoint, obj):
         if wifi.radio.enabled:
             try:
-                response = self.requests.post(secrets.apiURI + "debug", json=obj)
+                response = self.requests.post(secrets.apiURI + endpoint, json=obj)
                 return response.text
             except Exception as e:
                 print(str(e))
