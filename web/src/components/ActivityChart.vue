@@ -26,10 +26,10 @@ axios.get('http://localhost:3000/api/events?start=2023-03-08&end=2023-03-18')
           label: 'temp2',
           data: state.events.map(row => row.temp2)
         },
-        {
-          label: 'batt',
-          data: state.events.map(row => row.vbat)
-        }
+        // {
+        //   label: 'batt',
+        //   data: state.events.map(row => row.vbat)
+        // }
         ]
       }
     });
