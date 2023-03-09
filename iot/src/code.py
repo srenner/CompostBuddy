@@ -26,8 +26,8 @@ netFuncs = NetFunctions()
 i2c = board.STEMMA_I2C()
 icm = adafruit_icm20x.ICM20948(i2c)
 
-therm1 = adafruit_thermistor.Thermistor(board.A0, 10000, 10000, 25, 3950)
-therm2 = adafruit_thermistor.Thermistor(board.A1, 10000, 10000, 25, 3950)
+therm2 = adafruit_thermistor.Thermistor(board.A0, 10000, 10000, 25, 3950)
+therm1 = adafruit_thermistor.Thermistor(board.A1, 10000, 10000, 25, 3950)
 bin1_temp = therm1.temperature
 bin1_buf = [0.0,0.0,0.0]
 bin2_temp = therm2.temperature
