@@ -14,6 +14,7 @@ import colors
 import settings
 import json
 import adafruit_thermistor
+import alarm
 
 # SETUP ##########################################################################
 
@@ -49,6 +50,8 @@ chg.direction = digitalio.Direction.INPUT
 
 # voltage of the 3.7/4.2v battery that powers the board
 voltageInput = analogio.AnalogIn(board.A2)
+volts = HelperFunctions.calc_voltage(voltageInput.value)
+print("startup voltage: " + str(volts))
 
 current_time = time.time()
 next_json = current_time + settings.json_interval
@@ -68,9 +71,6 @@ led.fill(colors.led_off)
 # LOGIC ##########################################################################
 
 while True:
-
-    #print(time.time())
-
     current_gyro = HelperFunctions.get_gyro_motion(icm.gyro)
 
     #add item to gyroscope buffer to determine if the barrel is currently turning
@@ -118,9 +118,6 @@ while True:
 
         volts = HelperFunctions.calc_voltage(voltageInput.value)
 
-        # append json object to list
-        # ...
-
         datapoint = {
             "timeref": time.time(),
             "temp1": bin1_temp,
@@ -134,7 +131,7 @@ while True:
 
         post_body.append(datapoint)
 
-        next_json = current_time + settings.json_interval
+        next_json = current_time + (settings.json_interval * settings.low_power_multiplier)
 
     if current_time >= next_post:
         print("POSTing Data")
@@ -145,8 +142,16 @@ while True:
 
         post_body = []
 
-        next_post = current_time + settings.post_interval
+        if volts < 3.5:
+            low_power_multiplier = 2
+            if volts < 3.4:
+                time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + 3600)
+                alarm.exit_and_deep_sleep_until_alarms(time_alarm)
+        else:
+            low_power_multiplier = 1
 
-    time.sleep(settings.loop_interval)
+        next_post = current_time + (settings.post_interval * settings.low_power_multiplier)
+
+    time.sleep(settings.loop_interval * settings.low_power_multiplier)
 
 print("Bye!")
