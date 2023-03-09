@@ -8,6 +8,7 @@ import functions
 import socketpool
 import adafruit_requests
 import colors
+import math
 
 class HelperFunctions:
 
@@ -24,6 +25,13 @@ class HelperFunctions:
         y = abs(gyro[1])
         z = abs(gyro[2])
         return max([x,y,z])
+
+    def get_temperature(thermistor):
+        r = 10000 / (65535/thermistor.value - 1)
+        steinhart = math.log(r / 10000.0) / 3950.0
+        steinhart += 1.0 / (25.0 + 273.15)
+        steinhart = (1.0 / steinhart) - 273.15
+        return steinhart
 
 
 class NetFunctions:
