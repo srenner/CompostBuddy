@@ -17,8 +17,6 @@ app.listen(port, () => {
 
 app.get('/api/datetime', (req, res) => {
     let date = new Date();
-    //let localDate = 
-    //    new Date(date.getTime() - date.getTimezoneOffset()*60000);
     console.log("GET " + date.toISOString())
     res.send(date.toISOString());
 });
@@ -46,7 +44,6 @@ app.get('/api/event/latest', (req, res) => {
 
 app.get('/api/events', (req, res) =>{
     async function run() {
-
         let inputStartDate = req.query.start;
         let inputEndDate = req.query.end;
 
@@ -55,23 +52,21 @@ app.get('/api/events', (req, res) =>{
 
         const filter = {
             'timestamp': {
-              '$gte': new Date(startDate), 
-              '$lte': new Date(endDate)
+                '$gte': new Date(startDate), 
+                '$lte': new Date(endDate)
             }
-          };
+        };
         const client = await MongoClient.connect(mongoURI,
             { useNewUrlParser: true, useUnifiedTopology: true }
         );
         const coll = client.db('compost').collection('esp32');
         const cursor = coll.find(filter);
         const result = await cursor.toArray();
-
         await client.close();
         res.send(result);
     };
     run().catch(console.dir);
 });
-
 
 // POST ///////////////////////////////////////////////////////////////////////
 
@@ -91,17 +86,15 @@ app.post('/api/compost', function(req, res) {
             console.log(d);
           });
 
-          async function run() {
+        async function run() {
             const client = new MongoClient(mongoURI);
             await client.connect();
             let db = client.db("compost");
             await db.collection("esp32").insertMany(datapoints);
             await client.close();
-            //console.log("POSTed " + JSON.stringify(req.body));
         };
         run().catch(console.dir);
         res.send({});
-
     }    
     console.log("POST: " + len.toString() + " datapoint(s)");
 });
