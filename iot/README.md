@@ -18,15 +18,16 @@
 ~~~
 [
 	{
-		"temperature1": 26.6,
-		"temperature2": 15.9,
-		"vbat": 4.13,
-		"last_turn": "2022-06-07T06:00:00.000Z",
-		"pgood": true,
+		"timestamp": "2023-03-10T15:16:17.889Z",
+		"power": false,
+		"temp1": 6.0094,
+		"vbat": 3.70585,
 		"charging": true,
-		"errors": [
-			"OutOfRetries: Repeated socket failures"
-		]
+		"timeref": 947356495,
+		"last_turn": "2023-03-10T03:48:49.766Z",
+		"errors": [],
+		"_id": "640b49c11909e25cc8febfed",
+		"temp2": 6.18359
 	}
 ]
 ~~~
