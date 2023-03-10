@@ -27,7 +27,7 @@ app.get('/api/version', (req, res) => {
     res.send(meta.version);
 });
 
-app.get('/api/compost/latest', (req, res) => {
+app.get('/api/event/latest', (req, res) => {
     async function run() {
         const filter = {};
         const client = await MongoClient.connect(
@@ -75,36 +75,14 @@ app.get('/api/events', (req, res) =>{
 
 // POST ///////////////////////////////////////////////////////////////////////
 
-app.post('/api/blahdo', function(req, res) {
-    req.body.timestamp = new Date();
-    const uptime = req.body.uptime;
-    const lastTurn = req.body.lastTurn;
-    const batt = req.body.batt;
-
-    async function run() {
-        const client = new MongoClient(mongoURI);
-        await client.connect();
-        let db = client.db("compost");
-        await db.collection("esp32").insertOne(req.body);
-        await client.close();
-        console.log("POSTed " + JSON.stringify(req.body));
-    };
-    run().catch(console.dir);
-    res.send({});
-});
-
 app.post('/api/compost', function(req, res) {
     
     let datapoints = req.body;
     let len = datapoints.length;
 
-
     if(len > 0) {
         let now = new Date();
         let maxtime = Math.max.apply(Math,datapoints.map(function(o){return o.timeref;}))
-
-
-//date.setSeconds(date.getSeconds() - seconds)
 
         datapoints.forEach(function (d) {
             let timediff = maxtime - d.timeref;
@@ -112,7 +90,6 @@ app.post('/api/compost', function(req, res) {
             d.timestamp = new Date(date.setSeconds(date.getSeconds() - timediff));
             console.log(d);
           });
-
 
           async function run() {
             const client = new MongoClient(mongoURI);
@@ -125,9 +102,6 @@ app.post('/api/compost', function(req, res) {
         run().catch(console.dir);
         res.send({});
 
-    }
-
-
-    
+    }    
     console.log("POST: " + len.toString() + " datapoint(s)");
 });
