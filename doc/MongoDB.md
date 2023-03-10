@@ -12,3 +12,8 @@ Delete documents based on temperature values:
 ~~~
 db.esp32.deleteMany({'temp1': { '$gt': 10.0 }})
 ~~~
+
+Sort clause for latest documents first:
+~~~
+{ timestamp: -1}
+~~~
