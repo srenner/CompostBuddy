@@ -4,9 +4,14 @@ IoT project to assist with home composting. Uses a ESP32 microcontroller and a m
 
 ## Description
 
-This is a WiFi connected IoT project that monitors a home compost tumbler. The system monitors compost temperature and tumbling frequency. The system knows when the compost has been turned based on gyroscope data.
+This is a WiFi connected IoT project that monitors a home compost tumbler. The system monitors compost temperature and tumbling frequency. The system knows when the compost has been turned based on gyroscope data. The temperature probes indicate if the compost is actively decomposing.
 
-With the help of modern technology, we will grow the best tomatoes the world has ever tasted.
+## Tech in Use
+- CircuitPython
+- Express
+- MongoDB
+- Vue 3
+- Bootstrap 5
 
 ## Hardware
 - ESP32 based microcontroller
