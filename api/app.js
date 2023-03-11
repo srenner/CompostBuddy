@@ -83,6 +83,7 @@ app.post('/api/compost', function(req, res) {
             let timediff = maxtime - d.timeref;
             let date = new Date(now.valueOf());
             d.timestamp = new Date(date.setSeconds(date.getSeconds() - timediff));
+            d.batchDate = now;
             console.log(d);
           });
 
