@@ -20,11 +20,11 @@ axios.get('http://localhost:3000/api/events?start=2023-03-08&end=2023-03-18')
         datasets: [
         {
           label: 'temp1',
-          data: state.events.map(row => row.temp1)
+          data: state.events.map(row => Math.round(row.temp1 * 10.0) / 10.0)
         },
         {
           label: 'temp2',
-          data: state.events.map(row => row.temp2)
+          data: state.events.map(row => Math.round(row.temp2 * 10.0) / 10.0)
         },
         // {
         //   label: 'batt',
