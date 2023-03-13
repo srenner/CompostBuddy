@@ -137,12 +137,12 @@ while True:
         print("POSTing Data")
 
         netFuncs.connect_wifi(led)
-        netFuncs.post_json("compost", post_body)
+        netFuncs.post_json("events", post_body)
         netFuncs.disconnect_wifi(led)
 
         post_body = []
 
-        if volts < 3.5:
+        if volts < 3.6:
             low_power_multiplier = 2
             if volts < 3.4:
                 time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + 3600)
