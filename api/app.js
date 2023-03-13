@@ -70,7 +70,7 @@ app.get('/api/events', (req, res) =>{
 
 // POST ///////////////////////////////////////////////////////////////////////
 
-app.post('/api/compost', function(req, res) {
+app.post('/api/events', function(req, res) {
     
     let datapoints = req.body;
     let len = datapoints.length;
