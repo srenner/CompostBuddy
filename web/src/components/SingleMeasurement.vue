@@ -28,6 +28,10 @@ axios.get('http://localhost:3000/api/event/latest')
     {{ state.measurement }}
   </div>
   
+  <div>
+    Measurement taken at {{ state.measurement.timestamp }}
+  </div>
+
   <div class="row">
     <div class="col-md-auto">
       <dl>
