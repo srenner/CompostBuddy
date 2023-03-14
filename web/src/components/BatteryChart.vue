@@ -20,11 +20,15 @@ axios.get('http://localhost:3000/api/events?start=2023-03-08&end=2023-03-18')
           label: 'batt',
           data: state.events.map(row => row.vbat)
         }
-        // {
-        //   label: 'batt',
-        //   data: state.events.map(row => row.vbat)
-        // }
         ]
+      },
+      options: {
+        scales: {
+            y: {
+                max: 4.2,
+                suggestedMin: 3.3
+            }
+        }
       }
     });
 
@@ -36,7 +40,7 @@ axios.get('http://localhost:3000/api/events?start=2023-03-08&end=2023-03-18')
     // 
   });
 
-  
+
 </script>
 
 <template>
