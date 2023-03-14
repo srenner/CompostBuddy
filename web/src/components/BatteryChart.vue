@@ -3,8 +3,10 @@ import { reactive } from 'vue'
 import axios from 'axios';
 import Chart from 'chart.js/auto';
 import annotationPlugin from 'chartjs-plugin-annotation';
+import trendlinePlugin from 'chartjs-plugin-trendline';
 
 Chart.register(annotationPlugin);
+Chart.register(trendlinePlugin);
 
 const state = reactive({ apiVersion: 'unknown', events: [] });
 
@@ -22,8 +24,13 @@ axios.get('http://localhost:3000/api/events?start=2023-03-08&end=2023-03-18')
         {
             label: 'battery',
             data: state.events.map(row => row.vbat),
-            fill: true,
+            fill: false,
             borderColor: 'rgb(75, 192, 192)',
+            // trendlineLinear: {
+            //     style: "rgb(75 ,192 ,192, 0.1)",
+            //     lineStyle: "dotted",
+            //     width: 1
+            // },
         }
         ]
       },
