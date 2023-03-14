@@ -2,6 +2,9 @@
 import { reactive } from 'vue'
 import axios from 'axios';
 import Chart from 'chart.js/auto';
+import annotationPlugin from 'chartjs-plugin-annotation';
+
+Chart.register(annotationPlugin);
 
 const state = reactive({ apiVersion: 'unknown', events: [] });
 
@@ -17,19 +20,61 @@ axios.get('http://localhost:3000/api/events?start=2023-03-08&end=2023-03-18')
         labels: state.events.map(row => row.timestamp),
         datasets: [
         {
-          label: 'batt',
-          data: state.events.map(row => row.vbat)
+            label: 'battery',
+            data: state.events.map(row => row.vbat),
+            fill: true,
+            borderColor: 'rgb(75, 192, 192)',
         }
         ]
       },
+
       options: {
+        plugins: {
+            annotation: {
+                drawTime: 'beforeDraw',
+                annotations: [
+                    {
+                        id: 'batteryGreen',
+                        type: 'box',
+                        yMin: 3.6,
+                        backgroundColor: 'rgba(40, 167, 69, 0.25)',
+                        borderWidth: 0
+                    },
+                    {
+                        id: 'batteryYellow',
+                        type: 'box',
+                        yMin: 3.4,
+                        yMax: 3.6,
+                        backgroundColor: 'rgba(255, 193, 7, 0.25)',
+                        borderWidth: 0
+                    },
+                    {
+                        id: 'batteryRed',
+                        type: 'box',
+                        yMin: 0.0,
+                        yMax: 3.4,
+                        backgroundColor: 'rgba(220, 53, 69, 0.25)',
+                        borderWidth: 0
+                    },
+                ]
+            }
+        },
         scales: {
             y: {
-                max: 4.2,
+                suggestedMax: 4.2,
                 suggestedMin: 3.3
-            }
+            },
+            // x: {
+            //     ticks: {
+            //          callback: function(tick, index, array) {
+            //             return tick;
+            //              //return (index % 3) ? "" : tick;
+            //          }
+            //     }
+            // }
         }
-      }
+      },
+      
     });
 
   })
@@ -45,6 +90,7 @@ axios.get('http://localhost:3000/api/events?start=2023-03-08&end=2023-03-18')
 
 <template>
     <div style="width: 800px;"><canvas id="batteryChart"></canvas></div>
+    
     <div class="d-none">{{ state.events }}</div>
 </template>
 
