@@ -2,6 +2,9 @@
 import { reactive } from 'vue'
 import axios from 'axios';
 import Chart from 'chart.js/auto';
+import annotationPlugin from 'chartjs-plugin-annotation';
+
+Chart.register(annotationPlugin);
 
 const state = reactive({ apiVersion: 'unknown', events: [] });
 
@@ -29,6 +32,30 @@ axios.get('http://localhost:3000/api/events?start=2023-03-08&end=2023-03-18')
         ]
       },
       options: {
+        plugins: {
+            annotation: {
+                drawTime: 'beforeDraw',
+                annotations: [
+                    {
+                        id: 'idealRange',
+                        type: 'box',
+                        yMin: 55,
+                        yMax: 72,
+                        backgroundColor: 'rgba(40, 167, 69, 0.25)',
+                        borderWidth: 0
+                    },
+                    {
+                        id: 'heatTarget',
+                        type: 'box',
+                        yMin: 65,
+                        yMax: 72,
+                        backgroundColor: 'rgba(40, 167, 69, 0.25)',
+                        borderWidth: 0
+                    },
+                    
+                ]
+            }
+        },
         scales: {
             y: {
                 max: 75,
