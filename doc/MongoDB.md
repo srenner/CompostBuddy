@@ -20,3 +20,4 @@ db.esp32.deleteMany({'temp1': { '$gt': 10.0 }})
 
 ### Links:
 * [Time Series Limitations](https://www.mongodb.com/docs/manual/core/timeseries/timeseries-limitations/)
+* [Aggregation Operations](https://www.mongodb.com/docs/manual/aggregation/)
