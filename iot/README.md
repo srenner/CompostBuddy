@@ -31,3 +31,12 @@
 	}
 ]
 ~~~
+
+## TODO
+* Use tilt detection interrupt instead of gyroscope if possible
+* Implement custom instructions from API calls
+
+
+## Useful links
+* [Gyroscopes and accelerometers](https://www.analog.com/en/technical-articles/accelerometer-and-gyroscopes-sensors-operation-sensing-and-applications.html)
+* [LSM6DS33 Datasheet](https://web.archive.org/web/20201103021503/https://www.st.com/resource/en/datasheet/lsm6ds33.pdf)
