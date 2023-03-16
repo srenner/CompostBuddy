@@ -1,10 +1,18 @@
-# web
+# CompostBuddy Web UI
 
-This template should help get you started developing with Vue 3 in Vite.
+This is how the end user typically views data from the CompostBuddy IoT device. Uses Vue 3, Chart.js, and Bootstrap 5.
 
-## Recommended IDE Setup
+* If additional icons are needed, select them from [this list](https://fontawesome.com/search?o=r&m=free).
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+
+
+
+
+
+
+<br><br><br><br><br><br><br><br>
+## Vue boilerplate readme info:
+---
 
 ## Customize configuration
 
