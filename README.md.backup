@@ -1,7 +1,5 @@
 # CompostBuddy
 
-![CompostBuddy IoT Device](doc/CompostBuddy.jpg)
-
 IoT project to assist with home composting. Uses a ESP32 microcontroller and a minimal self-hosted companion app.
 
 ## Description
