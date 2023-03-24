@@ -60,7 +60,7 @@ axios.get('http://localhost:3000/api/event/latest')
           </dl>
         </div>
         <div class="col">
-          <div class="alert alert-info" v-if="state.measurement.errors.length === 0" role="alert">No current errors</div>
+          <div class="alert alert-info" v-if="!state.measurement.errors || state.measurement.errors.length === 0" role="alert">No current errors</div>
           <div class="alert alert-danger" role="alert" v-for="error in state.measurement.errors">
             {{ error }}
           </div>
