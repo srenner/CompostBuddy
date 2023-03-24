@@ -24,3 +24,6 @@ This is a WiFi connected IoT project that monitors a home compost tumbler. The s
 
 ## Possible future enhancements
 - Push notifications and data visibility powered by Home Assistant
+
+## Useful links
+- [Compost info from Cornell University](https://compost.css.cornell.edu/microorg.html)
