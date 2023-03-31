@@ -56,7 +56,7 @@ axios.get('http://localhost:3000/api/event/latest')
             <dd>{{ state.measurement.temp2 }}</dd>
 
             <dt>Last Turn</dt>
-            <dd>{{ state.measurement.last_turn || 'unknown' }}</dd>
+            <dd>{{ $filters.formattedLocalDateTime(state.measurement.last_turn) || 'unknown' }}</dd>
           </dl>
         </div>
         <div class="col">
