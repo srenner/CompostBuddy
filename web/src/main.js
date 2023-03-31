@@ -26,6 +26,16 @@ library.add(faPowerOff);
 const app = createApp(App)
     .component('font-awesome-icon', FontAwesomeIcon);
 
+
+app.config.globalProperties.$filters = {
+    formattedLocalDateTime(value) {
+        if(value) {
+            return new Date(value).toLocaleDateString() + " " + new Date(value).toLocaleTimeString();
+        }
+    }
+}
+      
+
 app.use(router);
 
 app.mount("#app");

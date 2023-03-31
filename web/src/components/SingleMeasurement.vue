@@ -31,7 +31,7 @@ axios.get('http://localhost:3000/api/event/latest')
 
   <div class="card">
     <div class="card-header">
-      <span>Measurement taken at {{ state.measurement.timestamp }}</span>
+      <span>Measurement taken at {{ $filters.formattedLocalDateTime(state.measurement.timestamp) }}</span>
     </div>
     <div class="card-body">
       <div class="row">
