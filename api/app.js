@@ -38,7 +38,7 @@ app.get('/api/event/latest', (req, res) => {
         );
         const coll = client.db('compost').collection('esp32');
         const cursor = coll.find(filter);
-        const result = await coll.findOne({}, {sort: {timestamp: -1}});
+        const result = await coll.find({}, {sort: {timestamp: -1}}).limit(quantity).toArray();
         await client.close();
         console.log("GET " + JSON.stringify(result));
         res.send(result);

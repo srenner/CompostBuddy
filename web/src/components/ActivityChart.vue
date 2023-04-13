@@ -8,9 +8,7 @@ Chart.register(annotationPlugin);
 
 const state = reactive({ apiVersion: 'unknown', events: [] });
 
-const minutesInDay = 1440; // should be pretty close to records per day
-
-axios.get('http://localhost:3000/api/events?start=2023-03-08&end=2023-04-18')
+axios.get('http://localhost:3000/api/event/latest?quantity=60')
   .then(function (response) {
     state.events = response.data.slice(-60);
 
