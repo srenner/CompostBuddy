@@ -27,6 +27,10 @@ app.get('/api/version', (req, res) => {
 
 app.get('/api/event/latest', (req, res) => {
     async function run() {
+        let quantity = req.query.quantity;
+        if(isNaN(quantity)) {
+            quantity = 1;
+        }
         const filter = {};
         const client = await MongoClient.connect(
             mongoURI,
