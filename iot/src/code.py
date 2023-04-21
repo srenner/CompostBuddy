@@ -77,7 +77,7 @@ while True:
     if tb_idx > 9:
         tb_idx = 0
     turn_buffer[tb_idx] = current_gyro
-    is_turning = sum(turn_buffer) > 5
+    is_turning = sum(turn_buffer) > 1
     tb_idx += 1
     if is_turning == False and was_turning == True:
         #turning is finished, set last_turn to be used in the next json post
