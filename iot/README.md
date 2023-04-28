@@ -18,16 +18,20 @@
 ~~~
 [
 	{
-		"timestamp": "2023-03-10T15:16:17.889Z",
-		"power": false,
-		"temp1": 6.0094,
-		"vbat": 3.70585,
+		"timestamp": "2023-04-28T21:42:28.208Z",
+		"batchDate": "2023-04-28T21:42:28.208Z",
+		"_id": "644c3dc48ae2171ea0a00647",
+		"temp2": 32.1522,
+		"temp1": 27.7572,
+		"timeref": 946837540,
+		"vbat": 3.52589,
 		"charging": true,
-		"timeref": 947356495,
-		"last_turn": "2023-03-10T03:48:49.766Z",
-		"errors": [],
-		"_id": "640b49c11909e25cc8febfed",
-		"temp2": 6.18359
+		"power": true,
+		"last_turn": "",
+		"errors": [
+			"Unknown failure 6",
+			"Sending request failed"
+		]
 	}
 ]
 ~~~
